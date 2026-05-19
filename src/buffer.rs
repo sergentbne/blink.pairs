@@ -54,11 +54,7 @@ impl ParsedBuffer {
         // when start_line is clamped by max_line
         let length = lines.len();
 
-        let new_end_state = new
-            .state_by_line
-            .last()
-            .cloned()
-            .unwrap_or(State::Normal);
+        let new_end_state = new.state_by_line.last().cloned().unwrap_or(State::Normal);
 
         self.matches_by_line.splice(
             start_line..old_end_line,

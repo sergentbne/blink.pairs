@@ -75,6 +75,7 @@ impl Match {
         }
     }
 
+    #[expect(clippy::len_without_is_empty)]
     pub fn len(&self) -> usize {
         match self.kind {
             Kind::Opening | Kind::NonPair => self.token.opening().len(),

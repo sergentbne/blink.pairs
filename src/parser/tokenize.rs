@@ -51,11 +51,11 @@ pub fn tokenize<'s, const N: usize>(
         .enumerate()
         .flat_map(move |(chunk_idx, chunk)| {
             let mut tokens = none;
-            tokens = tokens | new_line.simd_eq(chunk).select(new_line, none);
-            tokens = tokens | escape.simd_eq(chunk).select(escape, none);
+            tokens |= new_line.simd_eq(chunk).select(new_line, none);
+            tokens |= escape.simd_eq(chunk).select(escape, none);
 
             for &char in tokens_to_find.iter() {
-                tokens = tokens | char.simd_eq(chunk).select(char, none);
+                tokens |= char.simd_eq(chunk).select(char, none);
             }
 
             // Apply parsed tokens
@@ -70,10 +70,10 @@ pub fn tokenize<'s, const N: usize>(
                     b'\n' => {
                         col_offset.set(chunk_col + idx_in_chunk + 1);
 
-                        return Some(CharPos {
+                        Some(CharPos {
                             byte: b'\n',
                             col: 0,
-                        });
+                        })
                     }
                     byte => Some(CharPos {
                         byte,

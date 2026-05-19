@@ -13,15 +13,14 @@ pub enum TokenType {
 impl TokenType {
     pub fn matches(&self, token: &Token) -> bool {
         use TokenType::*;
-        match (self, token) {
+        matches!(
+            (self, token),
             (Delimiter, Token::Delimiter(_, _))
-            | (String, Token::String(_))
-            | (BlockString, Token::BlockString(_, _))
-            | (LineComment, Token::LineComment(_))
-            | (BlockComment, Token::BlockComment(_, _)) => true,
-
-            _ => false,
-        }
+                | (String, Token::String(_))
+                | (BlockString, Token::BlockString(_, _))
+                | (LineComment, Token::LineComment(_))
+                | (BlockComment, Token::BlockComment(_, _))
+        )
     }
 }
 

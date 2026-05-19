@@ -24,13 +24,13 @@ pub enum Token {
 impl Token {
     pub fn opening(&self) -> &'static str {
         match self {
-            Token::Delimiter(open, _) => *open,
-            Token::String(open) => *open,
-            Token::BlockString(open, _) => *open,
-            Token::LineComment(open) => *open,
-            Token::BlockComment(open, _) => *open,
-            Token::InlineSpan(_, open, _) => *open,
-            Token::BlockSpan(_, open, _) => *open,
+            Token::Delimiter(open, _) => open,
+            Token::String(open) => open,
+            Token::BlockString(open, _) => open,
+            Token::LineComment(open) => open,
+            Token::BlockComment(open, _) => open,
+            Token::InlineSpan(_, open, _) => open,
+            Token::BlockSpan(_, open, _) => open,
         }
     }
 

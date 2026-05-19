@@ -28,6 +28,7 @@ fn get_parsed_buffers<'a>() -> MutexGuard<'a, HashMap<usize, ParsedBuffer>> {
     }
 }
 
+#[expect(clippy::type_complexity)]
 fn parse_buffer(
     _lua: &Lua,
     (bufnr, tab_width, filetype, lines, start_line, old_end_line, new_end_line): (
