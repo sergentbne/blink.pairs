@@ -140,7 +140,7 @@ impl ParsedBuffer {
 
     /// Gets the indent level of the line, rounded down to the nearest tab width
     pub fn rounded_indent_level(&self, line: usize, tab_width: u8) -> u8 {
-        self.indent_levels[line].div_floor(tab_width) * tab_width
+        (self.indent_levels[line] / tab_width) * tab_width
     }
 
     /// Given an unmatched opening's position, attempts to find a matching opening/closing pair
