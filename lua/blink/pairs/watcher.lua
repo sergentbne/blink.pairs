@@ -45,14 +45,14 @@ local function parse_buffer(bufnr, start_line, old_end_line, new_end_line)
   local did_parse = ok and filetype_supported
   local state_changed = ok and full_reparse_needed
 
-  if did_parse and require('blink.pairs.config').debug then
-    vim.print('parsing time: ' .. (vim.uv.hrtime() - start_time) / 1e6 .. ' ms')
-  end
-
   -- NOTE: when an incremental parse changes the parser state at the edit boundary
   -- (e.g. opening/closing a block comment or multi-line string), subsequent
   -- lines have stale state. trigger a full reparse to fix them
   if did_parse and state_changed and new_end_line then parse_buffer(bufnr) end
+
+  if did_parse and require('blink.pairs.config').debug then
+    vim.print('parsing time: ' .. (vim.uv.hrtime() - start_time) / 1e6 .. ' ms')
+  end
 
   return did_parse
 end
