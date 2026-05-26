@@ -25,21 +25,18 @@ fn get_parsed_buffers<'a>() -> MutexGuard<'a, HashMap<usize, ParsedBuffer>> {
     }
 }
 
-#[expect(clippy::type_complexity)]
 fn parse_buffer(
     _lua: &Lua,
-    (bufnr, tab_width, filetype, lines, start_line, old_end_line, new_end_line): (
+    (bufnr, tab_width, filetype, text, start_line, old_end_line, new_end_line): (
         usize,
         u8,
         String,
-        Vec<String>,
+        String,
         Option<usize>,
         Option<usize>,
         Option<usize>,
     ),
 ) -> LuaResult<(bool, bool)> {
-    let lines_ref = lines.iter().map(|str| str.as_ref()).collect::<Vec<_>>();
-
     let mut parsed_buffers = get_parsed_buffers();
 
     // Incremental parse
@@ -47,14 +44,14 @@ fn parse_buffer(
         Ok(parsed_buffer.reparse_range(
             &filetype,
             tab_width,
-            &lines_ref,
+            &text,
             start_line,
             old_end_line,
             new_end_line,
         ))
     }
     // Full parse
-    else if let Some(parsed_buffer) = ParsedBuffer::parse(&filetype, tab_width, &lines_ref) {
+    else if let Some(parsed_buffer) = ParsedBuffer::parse(&filetype, tab_width, &text) {
         parsed_buffers.insert(bufnr, parsed_buffer);
         Ok((true, false))
     } else {
@@ -149,9 +146,7 @@ fn get_indent_levels(
         .unwrap_or_default())
 }
 
-// NOTE: skip_memory_check greatly improves performance
-// https://github.com/mlua-rs/mlua/issues/318
-#[mlua::lua_module(skip_memory_check)]
+#[mlua::lua_module]
 fn blink_pairs(lua: &Lua) -> LuaResult<LuaTable> {
     let exports = lua.create_table()?;
     exports.set("parse_buffer", lua.create_function(parse_buffer)?)?;

@@ -19,6 +19,7 @@ local function parse_buffer(bufnr, start_line, old_end_line, new_end_line)
   local rust = require('blink.pairs.rust')
 
   local lines = vim.api.nvim_buf_get_lines(bufnr, start_line or 0, new_end_line or -1, false)
+  local text = table.concat(lines, '\n')
 
   -- TODO: use 'lua' filetype for cmd buffers with := and :lua
   local ft = vim.bo[bufnr].filetype
@@ -41,7 +42,7 @@ local function parse_buffer(bufnr, start_line, old_end_line, new_end_line)
   end
 
   local ok, filetype_supported, full_reparse_needed =
-    pcall(rust.parse_buffer, bufnr, utils.get_tab_width(bufnr), ft, lines, start_line, old_end_line, new_end_line)
+    pcall(rust.parse_buffer, bufnr, utils.get_tab_width(bufnr), ft, text, start_line, old_end_line, new_end_line)
   local did_parse = ok and filetype_supported
   local state_changed = ok and full_reparse_needed
 

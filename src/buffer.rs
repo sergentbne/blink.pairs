@@ -11,8 +11,8 @@ impl ParsedBuffer {
         supports_filetype(filetype)
     }
 
-    pub fn parse(filetype: &str, tab_width: u8, lines: &[&str]) -> Option<Self> {
-        let mut parsed = parse_filetype(filetype, tab_width, lines, State::Normal)?;
+    pub fn parse(filetype: &str, tab_width: u8, text: &str) -> Option<Self> {
+        let mut parsed = parse_filetype(filetype, tab_width, text, State::Normal)?;
         parsed.calculate_stack_heights(tab_width);
         Some(parsed)
     }
@@ -21,7 +21,7 @@ impl ParsedBuffer {
         &mut self,
         filetype: &str,
         tab_width: u8,
-        lines: &[&str],
+        text: &str,
         start_line: Option<usize>,
         old_end_line: Option<usize>,
         _new_end_line: Option<usize>,
@@ -46,13 +46,13 @@ impl ParsedBuffer {
             .cloned()
             .unwrap_or(State::Normal);
 
-        let Some(new) = parse_filetype(filetype, tab_width, lines, initial_state) else {
+        let Some(new) = parse_filetype(filetype, tab_width, text, initial_state) else {
             return (false, false);
         };
 
         // Use lines.len() as authoritative length to avoid index mismatch
         // when start_line is clamped by max_line
-        let length = lines.len();
+        let length = text.lines().count();
 
         let new_end_state = new.state_by_line.last().cloned().unwrap_or(State::Normal);
 
@@ -619,7 +619,7 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     fn parse(filetype: &str, lines: &[&str]) -> ParsedBuffer {
-        ParsedBuffer::parse(filetype, 4, lines).unwrap()
+        ParsedBuffer::parse(filetype, 4, &lines.join("\n")).unwrap()
     }
 
     #[test]
