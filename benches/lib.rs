@@ -5,7 +5,8 @@ use blink_pairs::parser::{
     tokenize::{join_lines, tokenize},
     Matcher, State,
 };
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
+use std::hint::black_box;
 
 fn criterion_benches(c: &mut Criterion) {
     let c_text: &str = include_str!("./languages/c.c");
