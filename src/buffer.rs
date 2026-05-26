@@ -147,7 +147,7 @@ impl ParsedBuffer {
     /// where the closing ident level matches the unmatched opening.
     /// Performed recursively until the match cannot be moved further down the stack.
     ///
-    /// ```rust
+    /// ```text
     /// if some_example {
     ///     //          ^ unmatched
     ///     if no_closing_on_this {
@@ -155,7 +155,7 @@ impl ParsedBuffer {
     /// }
     /// ```
     /// becomes
-    /// ```rust
+    /// ```text
     /// if some_example {
     ///     //  matched ^
     ///     if no_closing_on_this {

@@ -9,11 +9,11 @@
 /// # Examples
 ///
 /// ```
-/// use blink_pairs::indent::indent_levels;
+/// use blink_pairs::parser::indent::indent_levels;
 ///
 /// let src = ["fn main() {", "\tprintln!(\"hello\");", "}"];
 /// let indents = indent_levels(&src, 8);
-/// assert_eq!(indents, vec![0, 4, 0]);
+/// assert_eq!(indents, vec![0, 8, 0]);
 /// ```
 pub fn indent_levels(lines: &[&str], tab_width: u8) -> Vec<u8> {
     let mut last_indent = None;

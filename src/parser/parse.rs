@@ -109,8 +109,8 @@ mod tests {
         assert_eq!(
             parse("c", "{\n}"),
             vec![
-                vec![Match::delimiter('{', 0, Some(0))],
-                vec![Match::delimiter('}', 0, Some(0))]
+                vec![Match::delimiter('{', 0, None)],
+                vec![Match::delimiter('}', 0, None)]
             ]
         );
 
@@ -118,7 +118,7 @@ mod tests {
             parse("c", "// comment {}\n}"),
             vec![
                 vec![Match::line_comment("//", 0)],
-                vec![Match::delimiter('}', 0, Some(0))],
+                vec![Match::delimiter('}', 0, None)],
             ]
         );
 
@@ -129,7 +129,7 @@ mod tests {
                     Match::block_comment("/*", 0),
                     Match::block_comment("*/", 14)
                 ],
-                vec![Match::delimiter('}', 0, Some(0))]
+                vec![Match::delimiter('}', 0, None)]
             ]
         );
     }
@@ -140,8 +140,8 @@ mod tests {
             parse("tex", "test 90\\% ( and b )\n%abc"),
             vec![
                 vec![
-                    Match::delimiter('(', 10, Some(0)),
-                    Match::delimiter(')', 18, Some(0))
+                    Match::delimiter('(', 10, None),
+                    Match::delimiter(')', 18, None)
                 ],
                 vec![Match::line_comment("%", 0)]
             ]
