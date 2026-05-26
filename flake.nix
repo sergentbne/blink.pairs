@@ -29,7 +29,10 @@
         inherit version;
         src = toSource {
           root = ./.;
-          fileset = fileFilter (file: file.hasExt "lua") ./lua;
+          fileset = unions [
+            (fileFilter (file: file.hasExt "lua") ./lua)
+            ./queries
+          ];
         };
 
         preInstall = ''
