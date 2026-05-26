@@ -1,6 +1,9 @@
 use itertools::Itertools;
 
-use crate::{buffer::ParsedBuffer, parser::indent::indent_levels};
+use crate::{
+    buffer::ParsedBuffer,
+    parser::{indent::indent_levels, tokenize::join_lines},
+};
 
 use super::{matcher::Matcher, tokenize::tokenize};
 
@@ -19,12 +22,10 @@ pub enum State {
 /// of the state and matches for each line
 pub fn parse<M: Matcher>(
     tab_width: u8,
-    text: &str,
+    lines: &[&str],
     initial_state: State,
     mut matcher: M,
 ) -> ParsedBuffer {
-    let lines = text.lines().collect::<Vec<_>>();
-
     // State
     let mut matches_by_line = Vec::with_capacity(lines.len());
     let mut line_matches = vec![];
@@ -34,8 +35,9 @@ pub fn parse<M: Matcher>(
 
     let mut escaped_col: Option<usize> = None;
 
-    let tokens = tokenize(text.as_bytes(), matcher.tokens());
-    let indent_levels = indent_levels(&lines, tab_width);
+    let text = join_lines(lines);
+    let tokens = tokenize(&text, matcher.tokens());
+    let indent_levels = indent_levels(lines, tab_width);
 
     let mut tokens = tokens.into_iter().multipeek();
 
@@ -91,10 +93,15 @@ pub fn parse<M: Matcher>(
 mod tests {
     use crate::parser::{parse_filetype, Match, State};
 
-    fn parse(filetype: &str, text: &str) -> Vec<Vec<Match>> {
-        parse_filetype(filetype, 4, text, State::Normal)
-            .unwrap()
-            .matches_by_line
+    fn parse(filetype: &str, lines: &str) -> Vec<Vec<Match>> {
+        parse_filetype(
+            filetype,
+            4,
+            &lines.split('\n').collect::<Vec<_>>(),
+            State::Normal,
+        )
+        .unwrap()
+        .matches_by_line
     }
 
     #[test]

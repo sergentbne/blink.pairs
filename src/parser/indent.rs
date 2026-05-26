@@ -9,7 +9,7 @@
 /// # Examples
 ///
 /// ```
-/// use blink_pairs::parser::indent_levels;
+/// use blink_pairs::parser::indent::indent_levels;
 ///
 /// let src = ["fn main() {", "\tprintln!(\"hello\");", "}"];
 /// let indents = indent_levels(&src, 8);
