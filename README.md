@@ -84,7 +84,7 @@ The behavior was inspired by [lexima.vim](https://github.com/cohama/lexima.vim) 
     },
     highlights = {
       enabled = true,
-      -- requires require('vim._extui').enable({}), otherwise has no effect
+      -- requires require('vim._core.ui2').enable({}), otherwise has no effect
       cmdline = true,
       -- set to { 'BlinkPairs' } to disable rainbow highlighting
       groups = { 'BlinkPairsOrange', 'BlinkPairsPurple', 'BlinkPairsBlue' },
