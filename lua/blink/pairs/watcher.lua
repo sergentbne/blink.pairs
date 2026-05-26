@@ -42,7 +42,7 @@ local function parse_buffer(bufnr, start_line, old_end_line, new_end_line)
   end
 
   local ok, filetype_supported, full_reparse_needed =
-    pcall(rust.parse_buffer, bufnr, utils.get_tab_width(bufnr), ft, text, start_line, old_end_line, new_end_line)
+    pcall(rust.parse_buffer, bufnr, utils.get_tab_width(bufnr), ft, text, start_line, old_end_line)
   local did_parse = ok and filetype_supported
   local state_changed = ok and full_reparse_needed
 

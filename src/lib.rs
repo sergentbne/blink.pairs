@@ -27,12 +27,11 @@ fn get_parsed_buffers<'a>() -> MutexGuard<'a, HashMap<usize, ParsedBuffer>> {
 
 fn parse_buffer(
     _lua: &Lua,
-    (bufnr, tab_width, filetype, text, start_line, old_end_line, new_end_line): (
+    (bufnr, tab_width, filetype, text, start_line, old_end_line): (
         usize,
         u8,
         String,
         String,
-        Option<usize>,
         Option<usize>,
         Option<usize>,
     ),
@@ -41,14 +40,7 @@ fn parse_buffer(
 
     // Incremental parse
     if let Some(parsed_buffer) = parsed_buffers.get_mut(&bufnr) {
-        Ok(parsed_buffer.reparse_range(
-            &filetype,
-            tab_width,
-            &text,
-            start_line,
-            old_end_line,
-            new_end_line,
-        ))
+        Ok(parsed_buffer.reparse_range(&filetype, tab_width, &text, start_line, old_end_line))
     }
     // Full parse
     else if let Some(parsed_buffer) = ParsedBuffer::parse(&filetype, tab_width, &text) {

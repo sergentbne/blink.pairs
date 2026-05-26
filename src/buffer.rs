@@ -24,7 +24,6 @@ impl ParsedBuffer {
         text: &str,
         start_line: Option<usize>,
         old_end_line: Option<usize>,
-        _new_end_line: Option<usize>,
     ) -> (bool, bool) {
         let max_line = self.matches_by_line.len();
         let start_line = start_line.unwrap_or(0).min(max_line);
