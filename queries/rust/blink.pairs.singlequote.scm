@@ -10,17 +10,16 @@
   (reference_type)
 ] @nopair.inside_or_after
 
-; incomplete struct definition
 ; struct Foo<
-(ERROR
-  .
-  "struct") @nopair.inside_or_after
-
-; incomplete function signature
 ; fn foo<
+; impl<
 (ERROR
   .
-  "fn") @nopair.inside_or_after
+  [
+    "struct"
+    "fn"
+    "impl"
+  ]) @nopair.inside_or_after
 
 ; emtpy function return type
 ; fn foo() -> {}
