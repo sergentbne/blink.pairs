@@ -1,4 +1,4 @@
-use blink_pairs::parser::{
+use blink_pairs_parser::parser::{
     indent::indent_levels,
     languages::{Rust, C},
     parse_filetype,
