@@ -108,7 +108,11 @@ The behavior was inspired by [lexima.vim](https://github.com/cohama/lexima.vim) 
 ### `vim.pack`
 
 ```lua
-vim.pack.add({ { src = 'https://github.com/saghen/blink.pairs', version = vim.version.range('*') } })
+vim.pack.add({
+  'https://github.com/saghen/blink.lib',
+  -- optionally pin to a version range, required for prebuilt binaries (.download())
+  { src = 'https://github.com/saghen/blink.pairs', version = vim.version.range('*') },
+})
 
 -- download prebuilt binaries from github releases
 require('blink.pairs').download():pwait(60000)
