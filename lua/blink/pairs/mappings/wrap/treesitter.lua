@@ -1,3 +1,4 @@
+local nvim = require('blink.lib.nvim')
 local mappings = require('blink.pairs.mappings')
 local rust = require('blink.pairs.rust')
 
@@ -20,8 +21,8 @@ local treesitter = {
 function treesitter.wrap(direction)
   if not mappings.is_enabled() then return end
 
-  local bufnr = vim.api.nvim_get_current_buf()
-  local changedtick = vim.api.nvim_buf_get_changedtick(bufnr)
+  local bufnr = nvim.get_current_buf()
+  local changedtick = nvim.buf_get_changedtick(bufnr)
 
   -- Fast path: continue cycling without Rust parser or treesitter lookups
   if treesitter.state and treesitter.state.bufnr == bufnr and treesitter.state.changedtick == changedtick then
@@ -29,7 +30,7 @@ function treesitter.wrap(direction)
   end
 
   -- Slow path: initialize new cycle
-  local cursor = vim.api.nvim_win_get_cursor(0)
+  local cursor = nvim.win_get_cursor(0)
   local row = cursor[1] - 1
   local col = cursor[2]
 
@@ -131,15 +132,15 @@ function treesitter.wrap_move(direction, ts_state)
   local bufnr = ts_state.bufnr
   local cc = ts_state.close_char
 
-  vim.api.nvim_buf_set_text(bufnr, cur_row, cur_col, cur_row, cur_col + #cc, { '' })
+  nvim.buf_set_text(bufnr, cur_row, cur_col, cur_row, cur_col + #cc, { '' })
 
   if tgt_row == cur_row and tgt_col > cur_col then tgt_col = tgt_col - #cc end
 
-  vim.api.nvim_buf_set_text(bufnr, tgt_row, tgt_col, tgt_row, tgt_col, { cc })
-  vim.api.nvim_win_set_cursor(0, { tgt_row + 1, tgt_col })
+  nvim.buf_set_text(bufnr, tgt_row, tgt_col, tgt_row, tgt_col, { cc })
+  nvim.win_set_cursor(0, { tgt_row + 1, tgt_col })
 
   ts_state.target_idx = new_idx
-  ts_state.changedtick = vim.api.nvim_buf_get_changedtick(bufnr)
+  ts_state.changedtick = nvim.buf_get_changedtick(bufnr)
 end
 
 return treesitter

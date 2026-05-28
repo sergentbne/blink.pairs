@@ -1,22 +1,22 @@
--- matchparen.lua - Handles highlighting of matching pairs
+local nvim = require('blink.lib.nvim')
+
 local M = {}
 
---- Initialize matchparen functionality
 --- @param config blink.pairs.HighlightsConfig
 function M.setup(config)
   if not (config.matchparen and config.matchparen.enabled) then return end
 
   local rust = require('blink.pairs.rust')
   local mappings_config = require('blink.pairs.config').mappings
-  local ns = vim.api.nvim_create_namespace('blink_pairs_matchparen')
+  local ns = nvim.create_namespace('blink_pairs_matchparen')
   local last_buf
 
   --- @type vim.api.keyset.events[]
   local autocmds = { 'CursorMoved', 'CursorMovedI' }
   if vim.fn.exists('##CursorMovedC') == 1 and config.cmdline then table.insert(autocmds, 'CursorMovedC') end
 
-  vim.api.nvim_create_autocmd(autocmds, {
-    group = vim.api.nvim_create_augroup('BlinkPairsMatchparen', {}),
+  nvim.create_autocmd(autocmds, {
+    group = nvim.create_augroup('BlinkPairsMatchparen', {}),
     callback = function(ev)
       if
         vim.b.pairs == false
@@ -26,7 +26,7 @@ function M.setup(config)
         return
       end
 
-      local mode = vim.api.nvim_get_mode().mode
+      local mode = nvim.get_mode().mode
       -- In insert mode, we'll get the CursorMovedI event, so we can ignore CursorMoved
       if
         (mode:match('i') and ev.event ~= 'CursorMovedI')
@@ -47,14 +47,14 @@ function M.setup(config)
       local pair = get_pair_func(buf, cursor[1] - 1, cursor[2])
 
       -- Clear extmarks
-      if last_buf and vim.api.nvim_buf_is_valid(last_buf) then vim.api.nvim_buf_clear_namespace(last_buf, ns, 0, -1) end
+      if last_buf and nvim.buf_is_valid(last_buf) then nvim.buf_clear_namespace(last_buf, ns, 0, -1) end
       last_buf = buf
 
       if pair == nil then return end
 
       -- Highlight matches
       for i, match in ipairs(pair) do
-        vim.api.nvim_buf_set_extmark(buf, ns, match.line, match.col, {
+        nvim.buf_set_extmark(buf, ns, match.line, match.col, {
           end_col = match.col + (match[i] or match[1]):len(),
           hl_group = config.matchparen.group,
           hl_mode = 'combine',

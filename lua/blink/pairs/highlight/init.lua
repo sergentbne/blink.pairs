@@ -1,7 +1,4 @@
-local nvim_buf_set_extmark = vim.api.nvim_buf_set_extmark
-local nvim_buf_clear_namespace = vim.api.nvim_buf_clear_namespace
-local nvim_buf_get_changedtick = vim.api.nvim_buf_get_changedtick
-local nvim_get_mode = vim.api.nvim_get_mode
+local nvim = require('blink.lib.nvim')
 
 local highlighter = {}
 
@@ -26,14 +23,14 @@ function highlighter.register(config)
   -- Per-window viewport: skip on_line entirely when viewport hasn't moved
   local win_view = {} -- winid -> { bufnr, tick, toprow, botrow }
 
-  vim.api.nvim_create_autocmd('BufWipeout', {
+  nvim.create_autocmd('BufWipeout', {
     callback = function(ev)
       buf_ticks[ev.buf] = nil
       buf_rendered[ev.buf] = nil
     end,
   })
 
-  vim.api.nvim_set_decoration_provider(ns, {
+  nvim.set_decoration_provider(ns, {
     on_win = function(_, winnr, bufnr, toprow, botrow)
       if
         vim.b[bufnr].pairs == false
@@ -43,7 +40,7 @@ function highlighter.register(config)
         return false
       end
 
-      local is_cmdline = nvim_get_mode().mode:match('c')
+      local is_cmdline = nvim.get_mode().mode:match('c')
       if is_cmdline then
         local is_cmdline_extui_buf = vim.bo[bufnr].filetype == 'cmd'
         if is_cmdline_extui_buf then
@@ -61,9 +58,9 @@ function highlighter.register(config)
       if type(config.groups) == 'table' and #config.groups == 0 then return false end
 
       -- buffer changed, full redraw
-      local tick = nvim_buf_get_changedtick(bufnr)
+      local tick = nvim.buf_get_changedtick(bufnr)
       if tick ~= buf_ticks[bufnr] then
-        nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+        nvim.buf_clear_namespace(bufnr, ns, 0, -1)
         buf_ticks[bufnr] = tick
         buf_rendered[bufnr] = {}
         win_view[winnr] = { bufnr, tick, toprow, botrow }
@@ -92,7 +89,7 @@ function highlighter.register(config)
       local matches = get_line_matches(bufnr, line_number)
       for i = 1, #matches do
         local match = matches[i]
-        nvim_buf_set_extmark(bufnr, ns, line_number, match.col, {
+        nvim.buf_set_extmark(bufnr, ns, line_number, match.col, {
           end_col = match.col + match[1]:len(),
           hl_group = match.stack_height == nil and config.unmatched_group or get_match_highlight(match),
           hl_mode = 'combine',
