@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "blink-lib": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779999494,
+        "narHash": "sha256-0oQfbISX+VQKPTyFm+V8kHtudDXnJoCCaMYutZ82gUw=",
+        "owner": "saghen",
+        "repo": "blink.lib",
+        "rev": "41bc1199dd1f5f0687efbd522061b22002c2d4c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "saghen",
+        "repo": "blink.lib",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1777268161,
@@ -15,6 +35,7 @@
     },
     "root": {
       "inputs": {
+        "blink-lib": "blink-lib",
         "nixpkgs": "nixpkgs"
       }
     }

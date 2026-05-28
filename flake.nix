@@ -3,10 +3,14 @@
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
+
+    blink-lib.url = "github:saghen/blink.lib";
+    blink-lib.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     nixpkgs,
+    blink-lib,
     self,
     ...
   }: let
@@ -17,11 +21,16 @@
 
     systems = ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
     forAllSystems = genAttrs systems;
-    nixpkgsFor = forAllSystems (system: nixpkgs.legacyPackages.${system});
+    nixpkgsFor = forAllSystems (system:
+      import nixpkgs {
+        inherit system;
+        overlays = [blink-lib.overlays.default];
+      });
 
     version = "0.4.1";
     blink-pairs-package = {
       rustPlatform,
+      vimPlugins,
       vimUtils,
     }:
       vimUtils.buildVimPlugin {
@@ -35,12 +44,16 @@
           ];
         };
 
+        dependencies = [
+          (vimPlugins.blink-lib or (throw "vimPlugins.blink-lib not found; did you include its overlay?"))
+        ];
+
         preInstall = ''
-          mkdir -p target/release
-          ln -s $rust_lib/lib/libblink_pairs.* target/release/
+          mkdir -p lib
+          ln -s $parser_lib/lib/libblink_pairs_parser.* lib/
         '';
 
-        env.rust_lib = rustPlatform.buildRustPackage {
+        env.parser_lib = rustPlatform.buildRustPackage {
           pname = "blink-pairs-lib";
           inherit version;
           src = toSource {
@@ -78,7 +91,7 @@
           name = "blink";
           inputsFrom = [
             packages.blink-pairs
-            packages.blink-pairs.rust_lib
+            packages.blink-pairs.parser_lib
           ];
           packages = [pkgs.rust-analyzer];
         };
