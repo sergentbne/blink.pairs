@@ -41,7 +41,9 @@ fn parse_buffer(
     let mut parsed_buffers = get_parsed_buffers();
 
     // Incremental parse
-    if let Some(parsed_buffer) = parsed_buffers.get_mut(&bufnr) {
+    if start_line.is_some()
+        && let Some(parsed_buffer) = parsed_buffers.get_mut(&bufnr)
+    {
         Ok(parsed_buffer.reparse_range(&filetype, tab_width, &lines_ref, start_line, old_end_line))
     }
     // Full parse
@@ -130,16 +132,6 @@ fn get_unmatched_closing_after(
     }))
 }
 
-fn get_indent_levels(
-    _lua: &Lua,
-    (bufnr, start_line, end_line): (usize, usize, usize),
-) -> LuaResult<Vec<u8>> {
-    Ok(get_parsed_buffers()
-        .get(&bufnr)
-        .map(|parsed_buffer| parsed_buffer.get_indent_levels(start_line, end_line))
-        .unwrap_or_default())
-}
-
 // NOTE: skip_memory_check greatly improves performance
 // https://github.com/mlua-rs/mlua/issues/318
 #[mlua::lua_module(skip_memory_check)]
@@ -166,6 +158,5 @@ fn blink_pairs_parser(lua: &Lua) -> LuaResult<LuaTable> {
         "get_unmatched_closing_after",
         lua.create_function(get_unmatched_closing_after)?,
     )?;
-    exports.set("get_indent_levels", lua.create_function(get_indent_levels)?)?;
     Ok(exports)
 }
