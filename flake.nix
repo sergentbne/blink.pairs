@@ -53,6 +53,15 @@
           ln -s $parser_lib/lib/libblink_pairs_parser.* lib/
         '';
 
+        # nvimRequireCheckHook adds the plugin to be tested to the rtp multiple
+        # times. This means blink.lib finds multiple instances of the
+        # library, causing the require checks to fail.
+        nvimSkipModules = [
+          "blink.pairs.rust"
+          "blink.pairs.mappings.wrap.motion"
+          "blink.pairs.mappings.wrap.treesitter"
+        ];
+
         env.parser_lib = rustPlatform.buildRustPackage {
           pname = "blink-pairs-lib";
           inherit version;
