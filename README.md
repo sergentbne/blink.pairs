@@ -50,8 +50,8 @@ The behavior was inspired by [lexima.vim](https://github.com/cohama/lexima.vim) 
   'saghen/blink.pairs',
   dependencies = 'saghen/blink.lib',
 
-  -- download prebuilt binaries from github releases
-  version = '*', -- must be on a versioned release to download
+  version = '*',
+  -- download prebuilt binaries from github releases, must be on a versioned release
   build = function() require('blink.pairs').download():pwait(60000) end,
   -- OR build from source
   -- build = function() require('blink.pairs').build():pwait(60000) end,
@@ -110,7 +110,6 @@ The behavior was inspired by [lexima.vim](https://github.com/cohama/lexima.vim) 
 ```lua
 vim.pack.add({
   'https://github.com/saghen/blink.lib',
-  -- optionally pin to a version range, required for prebuilt binaries (.download())
   { src = 'https://github.com/saghen/blink.pairs', version = vim.version.range('*') },
 })
 
