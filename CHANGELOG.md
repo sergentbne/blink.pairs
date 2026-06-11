@@ -1,3 +1,64 @@
+## [0.6.0](https://github.com/saghen/blink.pairs/compare/v0.5.0..v0.6.0) - 2026-06-11
+
+### Breaking Changes
+
+- migrate to blink.lib (#103) ([c733262](https://github.com/saghen/blink.pairs/commit/c7332620980a488fd2b62452bf2dd54a05e250d2))
+
+### Features
+
+- *(nix)* refactor (#98) ([1e8ad76](https://github.com/saghen/blink.pairs/commit/1e8ad765ab956e87b0c7b86a32ffc5c265d9519b))
+- add fennel support (#91) ([06a40fb](https://github.com/saghen/blink.pairs/commit/06a40fb64f350679d3fe741b0f19064c31c84488))
+- Add '' block string mapping for nix (#95) ([342c69c](https://github.com/saghen/blink.pairs/commit/342c69c3f72c337ada9d9f523da6c61aaefd3cad))
+- use fearless_simd crate, switch to stable toolchain, drop fenix (#101) ([a743a02](https://github.com/saghen/blink.pairs/commit/a743a02bc4fb17db864c5d6eb700b330c90e654b))
+- adopt `blink.lib.nvim` ([d48e086](https://github.com/saghen/blink.pairs/commit/d48e086edc6af1902f250e337a3e653de6dd5c27))
+- add panic hook to prevent println ([e3bfb44](https://github.com/saghen/blink.pairs/commit/e3bfb441f18864c156dc22fce852a510e1c9b767))
+- merge indents/tokenize/parse, remove simd, simplify lookahead (#104) ([44ef9b9](https://github.com/saghen/blink.pairs/commit/44ef9b9eb77cd5dfca471b6f7dc0ee74888626fb))
+
+### Bug Fixes
+
+- *(bench)* criterion::black_box is deprecated ([9126f83](https://github.com/saghen/blink.pairs/commit/9126f83dd9c14da2712d76b5b9de14d92fcc46b1))
+- *(benches)* crate name ([9d6f819](https://github.com/saghen/blink.pairs/commit/9d6f819404cbc442e4ba00b22e421f2edcde90ab))
+- *(nix)* include queries in plugin ([c1fa408](https://github.com/saghen/blink.pairs/commit/c1fa4086b12560594110aa03a2fe4f6b57eddeaa))
+- *(nix)* build with blink.lib ([276554f](https://github.com/saghen/blink.pairs/commit/276554fa64a6f6c3866181cc655498948184878c))
+- *(nix)* disable failing require checks ([100a60c](https://github.com/saghen/blink.pairs/commit/100a60c07a1c8350ce91d048285b497c5e64b0b8))
+- *(rust)* rust lifetimes quote pairing after impl< ([a1a9d16](https://github.com/saghen/blink.pairs/commit/a1a9d16b4c3ed033e2c968c28876dc64a659d5a3))
+- treat " as block comment in nix ([2da33da](https://github.com/saghen/blink.pairs/commit/2da33da164fbbf5cf52214fb9e7db1096d55e0dc))
+- reparse on edit boundary state change ([aab1fb8](https://github.com/saghen/blink.pairs/commit/aab1fb8dcb3582970dc0c6b74d4c41a996e2255e))
+- clippy lints ([0da7048](https://github.com/saghen/blink.pairs/commit/0da7048c2393d29ddaad6a168499c5eca92c1a90))
+- move debug time to after reparse ([e560220](https://github.com/saghen/blink.pairs/commit/e5602204d4a5d07a5f5bc52b73678be338b70fa2))
+- rust doesn't need new_end_line ([89a56ac](https://github.com/saghen/blink.pairs/commit/89a56ac1852b00d6b00f213633e236afea0b5572))
+- add /lib to gitignore ([b58f8c9](https://github.com/saghen/blink.pairs/commit/b58f8c9e2c2e962cc9e7dbf5b3c8085766368ef5))
+- build on gnu toolchain instead of gnu ([2b14612](https://github.com/saghen/blink.pairs/commit/2b146125c0bfac09774d57b025fd4f4c606987d4))
+- correctly resolve project_root in rust.lua (#107) ([436857a](https://github.com/saghen/blink.pairs/commit/436857a5c2558c8f66a61ce4745d1342789a4881))
+
+### Refactor
+
+- remove int_rounding feature ([7a2e375](https://github.com/saghen/blink.pairs/commit/7a2e375afbae3b392f5a2ee0b07f829ebb06af40))
+
+### Documentation
+
+- update extui to core ui2 ([b36ce7a](https://github.com/saghen/blink.pairs/commit/b36ce7a4fe53d5c0aea82b2235dd6d317367eb6c))
+- add blink.lib to vim.pack.add example ([8304212](https://github.com/saghen/blink.pairs/commit/8304212d7218bf054cc96a0a55335bfe04fd0a9f))
+- make version requirement for prebuilt binaries more clear ([607e1b6](https://github.com/saghen/blink.pairs/commit/607e1b6e298fbab6f12ea6e51afa7299dedc8eb1))
+- misc cross.toml ([766733c](https://github.com/saghen/blink.pairs/commit/766733ca6e1567384f90cbf1b1eddf1a6318b38d))
+- clarify prebuilt binary downloads ([5ff316b](https://github.com/saghen/blink.pairs/commit/5ff316b07c577f86cfb72ab2d30ce11bc27de66b))
+
+### Performance
+
+- send concatenated text to parser ([d4cc5a9](https://github.com/saghen/blink.pairs/commit/d4cc5a91d5f201a42fc569307e3d5d11de5ae7fc))
+
+### Testing
+
+- fixup broken tests ([48f3946](https://github.com/saghen/blink.pairs/commit/48f3946d938905fe09400fb100c7a96d0f546b86))
+
+### Revert
+
+- send concatenated text to parser ([cc1694a](https://github.com/saghen/blink.pairs/commit/cc1694aeff34bc29bd6057f8b1724abbe9f9ef53))
+
+## New Contributors ❤︎
+
+- @bandithedoge made their first contribution in [#91](https://github.com/saghen/blink.pairs/pull/91)
+
 ## [0.5.0](https://github.com/saghen/blink.pairs/compare/v0.4.1..v0.5.0) - 2026-03-24
 
 ### Features
