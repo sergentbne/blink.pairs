@@ -1,7 +1,4 @@
 fn main() {
-    // delete existing version file created by blink.download
-    let _ = std::fs::remove_file("target/release/version");
-
     println!("cargo:rustc-check-cfg=cfg(have_cold_path)");
     if std::process::Command::new("rustc")
         .arg("--version")
